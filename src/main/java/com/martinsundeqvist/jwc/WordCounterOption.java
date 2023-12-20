@@ -6,7 +6,4 @@ public enum WordCounterOption {
     PRINT_LINE_COUNT,
     PRINT_MAXIMUM_LINE_WIDTH,
     PRINT_WORD_COUNT,
-    PRINT_HELP,
-    PRINT_VERSION,
-    FILES_FROM_FILE
 }

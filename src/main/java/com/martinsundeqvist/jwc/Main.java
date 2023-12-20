@@ -16,9 +16,10 @@ public class Main {
     }
 
     private static void process(String args[]) {
-        if (args.length == 0) {
+        if (args.length == 0)
             System.exit(2);
-        } else {
+        else
+        {
             WordCounterArguments wordCounterArguments = new WordCounterArguments(args);
             WordCounter wc = new WordCounter(wordCounterArguments);
             List<String> results = wc.process();

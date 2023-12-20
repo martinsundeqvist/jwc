@@ -1,5 +1,7 @@
 package com.martinsundeqvist.jwc;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class ProcessingResult {
@@ -36,73 +38,30 @@ public class ProcessingResult {
         if (this.errorMessage != null)
             return String.format("wc: %s: %s", fileName, errorMessage);
 
+        List<String> outputList = new ArrayList<>();
+
         this.numberOfLines = this.numberOfLines == 0 ? 0 : this.numberOfLines + 1;
-        String linesOutput =
-                this.renderOptions.contains(WordCounterOption.PRINT_LINE_COUNT) ?
-                        this.numberOfLines + " " : "";
-        String wordOutput =
-                this.renderOptions.contains(WordCounterOption.PRINT_WORD_COUNT) ?
-                        this.numberOfWords + " " : "";
+        if (this.renderOptions.contains(WordCounterOption.PRINT_LINE_COUNT))
+            outputList.add(Integer.toString(this.numberOfLines));
+        
+        if (this.renderOptions.contains(WordCounterOption.PRINT_WORD_COUNT))
+            outputList.add(Integer.toString(this.numberOfWords));
 
         // TODO: Account for multi-character encodings
         // Currently we are going to assume that we only get input with single character encoding,
         // i.e. one byte -> one character such as in ASCII.
-        String charOutput =
-                this.renderOptions.contains(WordCounterOption.PRINT_CHAR_COUNT) ?
-                        this.numberOfBytes + " " : "";
-        String byteOutput =
-                this.renderOptions.contains(WordCounterOption.PRINT_BYTE_COUNT) ?
-                        this.numberOfBytes + " " : "";
-        String maxLineOutput =
-                this.renderOptions.contains(WordCounterOption.PRINT_MAXIMUM_LINE_WIDTH) ?
-                        this.maximumLineWidth + " " : "";
+        if (this.renderOptions.contains(WordCounterOption.PRINT_CHAR_COUNT))
+            outputList.add(Integer.toString(this.numberOfBytes));
 
-        return String.format("%s %s %s %s %s %s",
-                linesOutput,
-                wordOutput,
-                charOutput,
-                byteOutput,
-                maxLineOutput,
-                fileName);
+        if (this.renderOptions.contains(WordCounterOption.PRINT_BYTE_COUNT))
+            outputList.add(Integer.toString(this.numberOfBytes));
+
+        if (this.renderOptions.contains(WordCounterOption.PRINT_MAXIMUM_LINE_WIDTH))
+            outputList.add(Integer.toString(maximumLineWidth));
+
+        outputList.add(this.fileName);
+        
+        return String.join(" ", outputList);
     }
 
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public int getNumberOfBytes() {
-        return numberOfBytes;
-    }
-
-    public void setNumberOfBytes(int numberOfBytes) {
-        this.numberOfBytes = numberOfBytes;
-    }
-
-    public int getNumberOfWords() {
-        return numberOfWords;
-    }
-
-    public void setNumberOfWords(int numberOfWords) {
-        this.numberOfWords = numberOfWords;
-    }
-
-    public int getNumberOfLines() {
-        return numberOfLines;
-    }
-
-    public void setNumberOfLines(int numberOfLines) {
-        this.numberOfLines = numberOfLines;
-    }
-
-    public int getMaximumLineWidth() {
-        return maximumLineWidth;
-    }
-
-    public void setMaximumLineWidth(int maximumLineWidth) {
-        this.maximumLineWidth = maximumLineWidth;
-    }
 }

@@ -5,26 +5,38 @@ import java.util.HashSet;
 import java.util.List;
 
 public class WordCounterArguments {
-    HashSet<Character> shortOptions;
-    HashSet<String> longOptions;
-    List<String> fileNames;
+    private HashSet<Character> shortOptions;
+    private HashSet<String> longOptions;
+    private List<String> filenames;
 
     public WordCounterArguments(String args[]) {
-        shortOptions = new HashSet<>();
-        longOptions = new HashSet<>();
-        fileNames = new ArrayList<>();
+        this.shortOptions = new HashSet<>();
+        this.longOptions = new HashSet<>();
+        this.filenames = new ArrayList<>();
         for (String arg: args) {
             if (arg.charAt(0) == '-') {
                 if (arg.charAt(1) == '-') {
-                    longOptions.add(arg.substring(2));
+                    this.longOptions.add(arg.substring(2));
                 } else {
                     for (char c: arg.substring(1).toCharArray()) {
-                        shortOptions.add(c);
+                        this.shortOptions.add(c);
                     }
                 }
             } else {
-                fileNames.add(arg);
+                this.filenames.add(arg);
             }
         }
+    }
+
+    public HashSet<Character> getShortOptions() {
+        return this.shortOptions;
+    }
+    
+    public HashSet<String> getLongOptions() {
+        return this.longOptions;
+    }
+
+    public List<String> getFilenames() {
+        return this.filenames;
     }
 }

@@ -17,9 +17,9 @@ public class WordCounter {
 
     public WordCounter(WordCounterArguments wordCounterArguments) {
         this.wordCounterOptions = new HashSet<>();
-        wordCounterOptions.addAll(setOptionsBasedOnShortOptions(wordCounterArguments.shortOptions));
-        wordCounterOptions.addAll(setOptionsBasedOnLongOptions(wordCounterArguments.longOptions));
-        this.fileNames = wordCounterArguments.fileNames;
+        wordCounterOptions.addAll(setOptionsBasedOnShortOptions(wordCounterArguments.getShortOptions()));
+        wordCounterOptions.addAll(setOptionsBasedOnLongOptions(wordCounterArguments.getLongOptions()));
+        this.fileNames = wordCounterArguments.getFilenames();
     }
     private HashSet<WordCounterOption> setOptionsBasedOnShortOptions(HashSet<Character> shortOptions) {
         HashSet<WordCounterOption> wordCounterOptions = new HashSet<>();
@@ -62,10 +62,10 @@ public class WordCounter {
                     break;
                 case "max-line-length":
                     wordCounterOptions.add(WordCounterOption.PRINT_MAXIMUM_LINE_WIDTH);
+                    break;
                 case "words":
-                    wordCounterOptions.add(WordCounterOption.PRINT_HELP);
-                case "version":
-                    wordCounterOptions.add(WordCounterOption.PRINT_VERSION);
+                    wordCounterOptions.add(WordCounterOption.PRINT_WORD_COUNT);
+                    break;
                 default:
                     throw new InvalidLongOptionException(String.format("Option %s is not a valid long option", longOption));
             }
@@ -74,17 +74,6 @@ public class WordCounter {
     }
 
     public List<String> process() {
-        // TODO: Prefer user's actual choice instead of assuming help > version is preferred
-        // Actual WC will never display both help and version, it always picks the "first" option picked by user.
-        // For simplicity's sake we're currently going to just enforce the priority help > version
-        // regardless of the user's choice.
-        if (this.wordCounterOptions.contains(WordCounterOption.PRINT_HELP)) {
-            System.out.println(WordCounterConstants.HELP_STRING);
-        } else if (this.wordCounterOptions.contains(WordCounterOption.PRINT_VERSION)) {
-            // TODO: Handle absence of JWC_VERSION env variable
-            System.getenv("JWC_VERSION");
-        }
-
         List<String> results = new ArrayList<>();
         for (String filename: this.fileNames) {
             int numberOfBytes = 0;

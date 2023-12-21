@@ -87,7 +87,9 @@ public class WordCounter {
                 boolean inWord = false;
                 int currentLineLength = 0;
                 for (byte b: bytes) {
-                    if (b > ' ') {
+                    char ch = (char) b;
+
+                    if (!Character.isWhitespace(ch)) {
                         // Non-whitespace case
                         currentLineLength++;
                         inWord = true;
